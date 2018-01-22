@@ -1,0 +1,5 @@
+2-1 Java中线程的常用方法介绍
+创建线程的方法
+1.继承 Thread类
+2.实现Runnable接口
+二者都有public void run()方法
