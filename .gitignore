@@ -5,19 +5,19 @@ C/
 #JavaWeb
 Study/
 计算机网络/
-数据结构/[M Z.
+#数据结构/
 api/
-.chm
-.chw
-.dsw
-.opt
-.plg
-.ncb
-.dsp
+*.chm
+*.chw
+*.dsw
+*.opt
+*.plg
+*.ncb
+*.dsp
 Debug/
-.ico
-.rar
-.exe
+*.ico
+*.rar
+*.exe
 aaaaa/
 计网实验课教材.pdf
 
