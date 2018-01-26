@@ -56,24 +56,167 @@
             UserService s = Factory.getService();
             s.add();
          }
-    ·配置bean
-        ·第一步，创建xml配置文件，配置要创建对象类
-         <bean id="userServuce" class="cn.itcast.UserService"/>
-        ·第二步，创建工厂类，使用dom4j解析配置文件+反射
+    ·dom4j实现
+        ·A，创建xml配置文件，配置要创建对象类
+         <bean id="userService" class="cn.itcast.UserService"/>
+        ·B，创建静态工厂类，使用dom4j解析配置文件+反射
+         public class UserFactory{
+            //返回UserService对象的方法
+            public static UserService getService() {
+                //1.使用dom4j解析xml文件
+                //根据id值 userService，得到id值对应class属性值
+                String classValue= "class属性值";
+                //2.使用反射创建类对象
+                Class clazz = Class。forName(classValue);
+                //3.创建类对象
+                UserService service = clazz.newInstance();
+                return service;
+            }
+         }
+4.ioc入门案例
+    ·第一步 导入jar包
+        ·解压zip文件
+            ·lib的jar包
+                ·xxx.jar：基本jar包
+                ·xxx-javadoc.jar：文档
+                ·xxx-sources.jar：源代码
+            ·核心jar包：Beans Core Context SpEL
+        ·做spring最基本功能的时候，导入四个核心的jar包就可以了。
+        ·导入支持日志输出的jar包
+    ·第二步 创建类，在类里创建方法
+    ·第三步 创建spring配置文件，配置创建类
+        ·spring核心配置文件名称和位置不是固定的，建议放在src下，建议名称：
+         applicationContext.xml
+        ·引入schema约束
+        ·eg.：<bean id="user" class="cn.icast.ioc.User"/>
+    ·第四步 写代码测试对象创建
+        /*
+         * 1.加载spirng配置文件，根据配置文件创建对象
+         * (1)ClassPathXmlApplicationContext:
+         *    前缀classpath：表示的是项目的classpath下相对路径
+         *    前缀file 表示的是文件的绝对路径
+         *    无前缀默认为classpath下的相对路径
+         *    可以同时加载多个文件
+         *    可使用通配符
+         * (2)FileSystemXmlApplicationContext:
+         *    除默认为项目工作路径，即项目的根目录外，其他相同
+         *
+         */
+        ApplicationContext context =
+            new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        // 2.得到配置创建的对象
+        User user = (User)context.getBean("user");
+    ·配置文件没有提示问题（导入约束）
+        window-preferences-XML Catalog-add
 
 
-二、spring的入门
-1.ioc底层原理
-2.ioc入门案例
-3.解决配置文件没有提示
 
 三、spring的bean管理
 1.bean实例化三种方式
+    ·在Spring里面通过配置文件创建对象
+    ·bean实例化三种方式实现
+        ·使用类的无参数构造创建（重点）
+            ·需要有无参的构造方法
+            ·<bean id="user" class="cn.icast.ioc.User"/>
+        ·使用静态工厂创建
+            ·<bean id="bean2" class="cn.icast.bean.Bean2Factory"
+                factory-method="getBean2"></bean>
+            ·public class Bean2Factory {
+                 // 静态的方法，返回Bean2对象
+                 public static Bean2 getBean2() {
+                     return new Bean2();
+                 }
+             }
+
+        ·使用实例工厂创建
+            ·<bean id="bean3Factory" class="cn.icast.bean.Bean3Factory"></bean>
+             <bean id="bean3" factory-bean="bean3Factory"
+                factory-method="getBean3"></bean>
+            ·public class Bean3Factory {
+                 //普通的方法，返回Bean3对象
+                 public  Bean3 getBean3() {
+                     return new Bean3();
+                 }
+             }
 2.bean标签常用属性
+    ·id：起名称，id属性值任意命名。不能包含特殊符号
+    ·class：创建对象所在类的全路径
+    ·name：功能和id属性一样的，id属性值不能包含特殊符号，但是在name属性值里面可以包含
+     特殊符号（遗留问题，为了整合struts1框架，很少用到）
+    ·scope
+       *·singleton：默认值，单例的（对象只会创建一次）
+       *·prototype：多例的
+        ·request：web项目中，spring创建一个Bean的对象，将对象存入request域中
+        ·session：web项目中，spring创建一个Bean的对象，将对象存入到session域中
+        ·globalSession：web项目中，应用在Porlet环境，如果没有Prolet环境那么globalSession相当于
+         session
+
 3.属性注入方式介绍
+    ·创建对象的时候，为类里面的属性设置值
+    ·方式：
+        ·方式一 使用set方法注入
+         public class User {
+             private String name;
+             public void setName(String name) {
+                 this.name=name;
+             }
+         }
+         ·方式二 有参数构造注入
+          public class User {
+             private String name;
+             public User(String name) {
+                 this.name = name;
+             }
+          }
+         ·方式三 使用接口注入
+          public interface Dao {
+              public void delete (String name);
+          }
+          public class DaoImpl implements Dao{
+             private String name;
+             public void delete(String name) {
+                 this.name = name;
+             }
+          }
+
 4.spring注入属性（有参构造和set方法）
+    ·在spring框架里面，支持前两种方式，最常使用方式一
+    ·set方法
+     <bean id="book" class="cn.icast.property.Book">
+         <!-- 注入属性值
+            name属性值，类里面定义的属性名称
+            value属性，设置具体的值
+         -->
+         <property name="bookname" value="易筋经"></property>
+     </bean>
+    ·使用有参构造
+     <bean id="demo" class="cn.icast.property.PropertyDemo1">
+         <!-- 使用有参构造注入 -->
+         <constructor-arg name="username" value="小王小马"></constructor-arg>
+     </bean>
+
 5.spring注入对象类型属性（重点）
-6.名称空间注入
+    ·创建service类和dao类
+        ·在service得到dao对象
+    ·具体实现过程
+        ·在service里面把dao作为类型属性
+        ·生成dao类型属性的set方法
+        ·配置文件中通过set方法注入
+
+6.P 名称空间注入
+    ·在一个标签中不能写多个相同名称的属性，但通过名称空间可以表示多个操作
+    ·在beans属性中加入p名称空间，并通过p来注入属性
+    ·eg.
+    <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="person" class="cn.icast.property.Person" p:pname="lucy"></bean>
 7.spring注入复杂数据
+    ·数组
+    ·list集合
+    ·map集合
+    ·properties类型
 
 四、ioc和di区别
