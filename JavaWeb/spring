@@ -215,8 +215,56 @@
     <bean id="person" class="cn.icast.property.Person" p:pname="lucy"></bean>
 7.spring注入复杂数据
     ·数组
+    <property name="arrs">
+    <list>
+        <value>小王</value>
+        <value>小马</value>
+        <value>小宋</value>
+    </list>
+</property>
     ·list集合
+    <property name="list">
+            <list>
+                <value>小奥</value>
+                <value>小金</value>
+                <value>小普</value>
+            </list>
+        </property>
     ·map集合
+    <property name="map">
+            <map>
+                <entry key="aa" value="lucy"></entry>
+                <entry key="bb" value="mary"></entry>
+                <entry key="cc" value="tom"></entry>
+            </map>
+        </property>
     ·properties类型
+    <property name="properties">
+            <props>
+            <!-- prop标签没有value属性 -->
+                <prop key="driverclass">com.mysql.jdbc.Driver</prop>
+                <prop key="username">pengcheng</prop>
+            </props>
+        </property>
 
-四、ioc和di区别
+8.ioc和di区别
+    ·IOC：控制反转，把对象创建交给spring进行配置
+    ·DI：依赖注入，向类里面的属性中设置值
+    ·关系：依赖注入不能单独存在，需要在ioc基础之上完成操作
+
+
+四、Spring整合web项目原理
+1.加载spring核心配置文件
+    ·new对象，功能可能实现，效率很低
+2.实现思想：把记载配置文件和创建独享过程，在服务器启动时候完成
+3.实现原理：
+    ·ServletContext对象
+    ·监听器
+    ·具体使用
+        ·在服务器启动的时候，为每个项目创建ServletContext对象
+        ·在ServletContext对象创建的时候，使用监听器可以具体到ServletContext对象在什么
+         时候创建
+        ·使用监听器具坚挺到ServletContext对象创建时候
+        ·加载spring配置文件，把配置文件配置对象创建
+        ·把穿件出来的对象放到ServletContext域对象里面（setAttribute方法）
+        ·获取对象的时候，到ServletContext域得到（getAttribute方法）
