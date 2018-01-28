@@ -253,7 +253,7 @@
     ·关系：依赖注入不能单独存在，需要在ioc基础之上完成操作
 
 
-四、Spring整合web项目原理
+二、Spring整合web项目原理
 1.加载spring核心配置文件
     ·new对象，功能可能实现，效率很低
 2.实现思想：把记载配置文件和创建独享过程，在服务器启动时候完成
@@ -268,3 +268,20 @@
         ·加载spring配置文件，把配置文件配置对象创建
         ·把穿件出来的对象放到ServletContext域对象里面（setAttribute方法）
         ·获取对象的时候，到ServletContext域得到（getAttribute方法）
+
+三、
+1.spring的bean管理（注解）
+    ·使用注解创建对象
+    ·使用注解注入睡醒
+    ·xml和注解方式混合使用
+
+2.AOP
+    ·aop概述
+    ·aop底层原理
+    ·aop操作相关术语
+
+3.spring的aop操作（基于aspectj的xml方式）
+
+4.log4j介绍
+
+5.spring整合web项目演示
