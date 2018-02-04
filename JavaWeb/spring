@@ -223,7 +223,7 @@
     </list>
 </property>
     ·list集合
-    <property name="list">
+        <property name="list">
             <list>
                 <value>小奥</value>
                 <value>小金</value>
@@ -231,7 +231,7 @@
             </list>
         </property>
     ·map集合
-    <property name="map">
+        <property name="map">
             <map>
                 <entry key="aa" value="lucy"></entry>
                 <entry key="bb" value="mary"></entry>
@@ -239,7 +239,7 @@
             </map>
         </property>
     ·properties类型
-    <property name="properties">
+        <property name="properties">
             <props>
             <!-- prop标签没有value属性 -->
                 <prop key="driverclass">com.mysql.jdbc.Driver</prop>
@@ -266,5 +266,6 @@
          时候创建
         ·使用监听器具坚挺到ServletContext对象创建时候
         ·加载spring配置文件，把配置文件配置对象创建
-        ·把穿件出来的对象放到ServletContext域对象里面（setAttribute方法）
+        ·把创建出来的对象放到ServletContext域对象里面（setAttribute方法）
         ·获取对象的时候，到ServletContext域得到（getAttribute方法）
+    ·
