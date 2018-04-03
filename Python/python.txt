@@ -388,6 +388,7 @@
      语句的编程语言只能通过尾递归实现循环。
     ·Python标准的解释器没有针对尾递归做优化，任何递归函数都存在栈溢出的问题。
 
+
 三.高级特性
 1.切片
     ·L = ['Michael', 'Sarah', 'Tracy', 'Bob', 'Jack']
@@ -496,7 +497,7 @@
         L2 = [x.lower() for x in L1 if isinstance(x, str)]
 
 4.生成器
-    ·过列表生成式，我们可以直接创建一个列表。但是，受到内存限制，列表容量肯定是有限的。
+    ·通过列表生成式，我们可以直接创建一个列表。但是，受到内存限制，列表容量肯定是有限的。
      而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问
      前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。Python中，列表元素可以按
      照某种算法推算出来，不必创建完整的list，从而节省大量的空间这种一边循环一边计算的机
@@ -520,12 +521,12 @@
     ·定义generator的另一种方法。如果一个函数定义中包含yield关键字，那么这个函数就不再
      是一个普通函数，而是一个generator
             def odd():
-            print('step 1')
-            yield 1
-            print('step 2')
-            yield(3)
-            print('step 3')*
-            yield(5)
+                print('step 1')
+                yield 1
+                print('step 2')
+                yield(3)
+                print('step 3')*
+                yield(5)
         ·函数是顺序执行，遇到return语句或者最后一行函数语句就返回。而变成generator的
          函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的
          yield语句处继续执行。
@@ -533,4 +534,49 @@
          一个返回值，第4次调用next(o)时报错
     ·但是用for循环调用generator时，发现拿不到generator的return语句的返回值。如果想要
      拿到返回值，必须捕获StopIteration错误，返回值包含在StopIteration的value中：
-    ·
+
+5.迭代器
+    ·可以直接作用于for循环的对象统称为可迭代对象：Iterable。其数据类型有以下几种：
+        ·一类是集合数据类型，如list、tuple、dict、set、str等；
+        ·一类是generator，包括生成器和带yield的generator function。
+        ·可以使用isinstance()判断一个对象是否是Iterable对象：
+            >>> from collections import Iterable
+            >>> isinstance([], Iterable)
+            True
+    ·可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。
+        ·生成器不但可以作用于for循环，还可以被next()函数不断调用并返回下一个值，直到
+         最后抛出StopIteration错误表示无法继续返回下一个值了。
+        ·可以使用isinstance()判断一个对象是否是Iterator对象：
+            >>> from collections import Iterator
+            >>> isinstance((x fo
+            r x in range(10)), Iterator)
+            True
+    ·生成器都是Iterator对象，但list、dict、str虽然是Iterable，却不是Iterator。
+    ·Python的Iterator对象表示的是一个数据流，Iterator对象可以被next()函数调用并不断
+     返回下一个数据，直到没有数据时抛出StopIteration错误。可以把这个数据流看做是一个有
+     序序列，但我们却不能提前知道序列的长度，只能不断通过next()函数实现按需计算下一个
+     数据，所以Iterator的计算是惰性的，只有在需要返回下一个数据时它才会计算。
+    ·集合数据类型如list、dict、str等是Iterable但不是Iterator，不过可以通过iter()函数
+     获得一个Iterator对象。
+    ·Python的for循环本质上就是通过不断调用next()函数实现的
+
+四.函数式编程
+1.高阶函数
+    ·概念
+        ·变量可以指向函数
+        ·函数名也是变量
+        ·传入函数
+        ·   def add(x, y, f):
+            return f(x) + f(y)
+            print(add(-5, 6, abs))
+    ·map/reduce
+        ·map()传入的第一个参数是f，即函数对象本身。由于结果r是一个Iterator，Iterator
+         是惰性序列，因此通过list()函数让它把整个序列都计算出来并返回一个list。
+             def f(x):
+                 return x * x
+             r = map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+             # [1, 4, 9, 16, 25, 36, 49, 64, 81]
+        ·reduce()把一个函数作用在一个序列[x1, x2, x3, ...]上，这个函数必须接收两个参
+         数，reduce把结果继续和序列的下一个元素做累积计算
+            ·from functools import reduce
+            ·reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
