@@ -580,3 +580,111 @@
          数，reduce把结果继续和序列的下一个元素做累积计算
             ·from functools import reduce
             ·reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
+    ·filter
+        ·Python内建的filter()函数用于过滤序列。
+        ·和map()类似，filter()也接收一个函数和一个序列。和map()不同的是，filter()把
+         传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该
+         元素。
+            def is_odd(n):
+            return n % 2 == 1
+            list(filter(is_odd, [1, 2, 4, 5, 6, 9, 10, 15]))
+        ·filter()函数返回的是一个Iterator，也就是一个惰性序列，所以要强迫filter()完
+         成计算结果，需要用list()函数获得所有结果并返回list。
+    ·sorted
+        ·直接排序
+            >>> sorted([36, 5, -12, 9, -21])
+            [-21, -12, 5, 9, 36]
+        ·接收一个key函数来实现自定义的排序
+            >>> sorted([36, 5, -12, 9, -21], key=abs)
+            [5, 9, -12, -21, 36]
+        ·要进行反向排序，不必改动key函数，可以传入第三个参数reverse=True
+            >>> sorted(['bob', 'about', 'Zoo', 'Credit'], key=str.lower, \
+            ... reverse=True)
+            ['Zoo', 'Credit', 'bob', 'about']
+
+2.返回函数
+    ·函数作为返回值
+        ·如果不需要立刻求和，而是在后面的代码中，根据需要再计算怎么办？可以不返回求和的
+         结果，而是返回求和的函数：
+            def lazy_sum(*args):
+                def sum():
+                    ax = 0
+                    for n in args:
+                        ax = ax + n
+                    return ax
+                return sum
+        ·当我们调用lazy_sum()时，返回的并不是求和结果，而是求和函数：
+            >>> f = lazy_sum(1, 3, 5, 7, 9)
+            >>> f
+            <function lazy_sum.<locals>.sum at 0x101c6ed90>
+        ·调用函数f时，才真正计算求和的结果：
+            >>> f()
+            25
+        ·在这个例子中，我们在函数lazy_sum中又定义了函数sum，并且，内部函数sum可以引用
+         外部函数lazy_sum的参数和局部变量，当lazy_sum返回函数sum时，相关参数和变量都
+         保存在返回的函数中，这种称为“闭包（Closure）”的程序结构拥有极大的威力。
+        ·当我们调用lazy_sum()时，每次调用都会返回一个新的函数，即使传入相同的参数。
+    ·闭包
+        ·注意到返回的函数在其定义内部引用了局部变量args，所以，当一个函数返回了一个函
+         数后，其内部的局部变量还被新函数引用。
+        ·另一个需要注意的问题是，返回的函数并没有立刻执行，而是直到调用了f()才执行。
+                def count():
+                    fs = []
+                    for i in range(1, 4):
+                        def f():
+                             return i*i
+                        fs.append(f)
+                    return fs
+
+                f1, f2, f3 = count()
+            ·调用f1()，f2()和f3()的结果
+                >>> f1()
+                9
+                >>> f2()
+                9
+                >>> f3()
+                9
+            ·全部都是9！原因就在于返回的函数引用了变量i，但它并非立刻执行。等到3个函数
+             都返回时，它们所引用的变量i已经变成了3，因此最终结果为9。
+        ·返回闭包时牢记一点：返回函数不要引用任何循环变量，或者后续会发生变化的变量。
+        ·如果一定要引用循环变量怎么办？方法是再创建一个函数，用该函数的参数绑定循环变量
+         当前的值，无论该循环变量后续如何更改，已绑定到函数参数的值不变：
+             def count():
+                 def f(j):
+                     def g():
+                         return j*j
+                     return g
+                 fs = []
+                 for i in range(1, 4):
+                     fs.append(f(i)) # f(i)立刻被执行，因此i的当前值被传入f()
+                 return fs
+    ·利用闭包和生成器返回一个计数器函数，每次调用它返回递增整数：
+        def create_counter():
+            def counter():
+                def lt():
+                    mm = 0
+                    while True:
+                        mm += 1
+                        yield mm
+                g = lt()
+
+                def inner():
+                    return next(g)
+                return inner
+            return counter()
+
+        counterA = create_counter()
+        print(type(counterA))
+        print(counterA(), counterA(), counterA(), counterA(), counterA())
+        # 1 2 3 4 5
+
+3.匿名函数
+    ·在Python中，对匿名函数提供了有限支持。还是以map()函数为例，计算f(x)=x2时，除了定
+     义一个f(x)的函数外，还可以直接传入匿名函数：
+         >>> list(map(lambda x: x * x, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+         [1, 4, 9, 16, 25, 36, 49, 64, 81]
+    ·匿名函数lambda x: x * x实际上就是：
+        def f(x):
+        return x * x
+    ·关键字lambda表示匿名函数，冒号前面的x表示函数参数。
+    ·匿名函数有个限制，就是只能有一个表达式，不用写return，返回值就是该表达式的结果。
