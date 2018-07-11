@@ -254,12 +254,12 @@
      isinstance()实现
         ·参数类型做检查，只允许整数和浮点数类型的参数
             def my_abs(x):
-            if not isinstance(x, (int, float)):
-                raise TypeError('bad operand type')
-            if x >= 0:
-                return x
-            else:
-                return -x
+                if not isinstance(x, (int, float)):
+                    raise TypeError('bad operand type')
+                if x >= 0:
+                    return x
+                else:
+                    return -x
     ·返回多个值
         ·   import math
 
@@ -307,10 +307,10 @@
          内部，参数numbers接收到的是一个tuple，因此，函数代码完全不变。但是，调用该函
          数时，可以传入任意个参数，包括0个参数。
             ·def calc(*numbers):
-             sum = 0
-             for n in numbers:
-                 sum = sum + n * n
-             return sum
+                 sum = 0
+                 for n in numbers:
+                     sum = sum + n * n
+                 return sum
             ·>>> calc(1, 2)
              5
              >>> calc()
