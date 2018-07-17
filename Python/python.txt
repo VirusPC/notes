@@ -8,16 +8,16 @@
         ·三个双引号或三个单引号中的回车会被当做\n,可用来显示多行内容
         ·在引号前加r如print(r"\n'''"),引号内的内容被当做纯字符串,加u则为unicode字符串
     ·布尔值
-        ·值:True、False
-        ·运算符:or、and、not  相当于 Java中的 &&、||、！
+        ·值:True、False 相当于Java、js中的true、false
+        ·运算符:or、and、not  相当于Java中的 &&、||、！
     ·空值
-        ·None
+        ·None 相当于Java中的Null
     ·可以把任意数据类型赋值给变量，同一个变量可以反复赋值，而且可以是不同类型的变量
     ·除法运算
         ·/为除号，得到浮点数
         ·//为地板除，结果向下取整
         ·%取余
-    ·定义变量机制类似JavaScript省略var
+    ·动态语言，定义变量机制类似JavaScript省略var, 不必先定义后使用
 
 2.字符串和编码
     ·编码类型:
@@ -72,6 +72,12 @@
          字符串内的占位符{0}、{1}……
             ·>>>'Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)
                 'Hello, 小明, 成绩提升了 17.1%'
+        ·print自带换行，若不想换行需设置end属性
+            ·print('contents', end='')
+    ·java
+        String string = "test";
+        byte[] bs = string.getBytes("GBK");
+        string = new String(bs, "UTF-8");
 
 3.使用list和tuple
     ·list
@@ -158,8 +164,9 @@
         ·>>> d = {'Michael': 95, 'Bob': 75, 'Tracy': 85}
          >>> d['Michael']
          95
-        ·把数据放入dict的方法，除了初始化时指定外，还可以通过key放入：
-         d['Adam'] = 67
+        ·把数据放入dict的方法，除了初始化时指定外，还可以通过key放入；java需要调用
+         put()方法：
+            d['Adam'] = 67
         ·由于一个key只能对应一个value，所以，多次对一个key放入value，后面的值会把前面
          的值冲掉
         ·如果key不存在，dict就会报错要避免key不存在的错误，有两种办法
@@ -172,6 +179,31 @@
                 >>> d.get('Thomas', -1)
                 -1
             ·dict内部存放的顺序和key放入的顺序是没有关系的。
+        ·遍历
+            ·>>>for key in d : # 相当于 for key in d.keys() :
+            ·>>>for value in d.values() :
+            ·遍历字典项
+             >>>for kv in d.items() :
+             ...    print(kv)
+             ...
+             ('Michael', 95)
+             ('Bob', 75)
+             ('Tracy', 85)
+            ·遍历字典键值
+                ·>>>for k, v in d.items() :
+                 ...    print(k + ' ' + v)
+                 ...
+                 Michael 95
+                 Bob 75
+                 Tracy 85
+                ·>>>for (k, v) in d.items() :
+                 ...    print(k + ' ' + v)
+                 ...
+                 Michael 95
+                 Bob 75
+                 Tracy 85
+
+
         ·和list比较，dict有以下几个特点：
             ·dict查找和插入的速度极快，不会随着key的增加而变慢；list查找和插入的时间
              随着元素的增加而增加；
@@ -180,11 +212,12 @@
         ·set和dict类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在
          set中，没有重复的key。
         ·要创建一个set，需要提供一个list作为输入集合
-            >>> s = set([1, 2, 3])
+            >>> s = set([1, 2, 3]) # s = set{1, 2, 3}
             >>> s
             {1, 2, 3}
-        ·通过add(key)方法可以添加元素到set中，可以重复添加，但不会有效果
-        ·通过remove(key)方法可以删除元素
+        ·通过add(key)方法可以添加元素到set中，可以重复添加，但不会有效果；
+         list通过insert或append
+        ·通过remove(key)方法可以删除元素；list通过pop
         ·set可以看成数学意义上的无序和无重复元素的集合，因此，两个set可以做数学意义上
          的交集、并集等操作
             >>> s1 = set([1, 2, 3])
@@ -204,7 +237,7 @@
          对象自身的内容。相反，这些方法会创建新的对象并返回，这样，就保证了不可变对象本
          身永远是不可变的。
             >>> a = 'abc'
-            >>> b = a.replace('a', 'A')
+            >>> b = a.replace('a', 'A') # 同java
             >>> b
             'Abc'
             >>> a
@@ -231,12 +264,15 @@
 2.定义函数
     ·在Python中，定义一个函数要使用def语句，依次写出函数名、括号、括号中的参数和冒号:
      ，然后，在缩进块中编写函数体，函数的返回值用return语句返回。
-        def my_abs(x):
-            if x >= 0:
-             return x
-            else:
-             return -x
-        print(my_abs(-99))
+        ·python
+         def my_abs(x):
+             if x >= 0:
+                 return x
+             else:
+                 return -x
+         print(my_abs(-99))
+        ·js
+         function my_abs(x) {...}
     ·在Python交互环境中定义函数时，注意Python会出现...的提示。函数定义结束后需要按两次
      回车重新回到>>>提示符下
     ·如果你已经把my_abs()的函数定义保存为abstest.py文件了，那么，可以在该文件的当前目
@@ -331,7 +367,8 @@
              name: Michael age: 30 other: {}
             ·>>> person('Bob', 35, city='Beijing')
              name: Bob age: 35 other: {'city': 'Beijing'}
-             >>> person('Adam', 45, gender='M', job='Engineer')
+             >>> gender='M'
+             >>> person('Adam', 45, gender=gender, job='Engineer')
              name: Adam age: 45 other: {'gender': 'M', 'job': 'Engineer'}
         ·**extra表示把extra这个dict的所有key-value用关键字参数传入到函数的**kw参数，
          kw将获得一个dict，注意kw获得的dict是extra的一份拷贝，对kw的改动不会影响到函
@@ -578,7 +615,7 @@
              r = map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])
              # [1, 4, 9, 16, 25, 36, 49, 64, 81]
         ·reduce()把一个函数作用在一个序列[x1, x2, x3, ...]上，这个函数必须接收两个参
-         数，reduce把结果继续和序列的下一个元素做累积计算
+         数，reduce把结果继续和序列下一个元素做累积计算
             ·from functools import reduce
             ·reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)
     ·filter
@@ -822,8 +859,10 @@
 
 五.模块
 1.概念
+    ·任何模块代码的第一个字符串都被视为模块的文档注释
     ·一个.py文件就称之为一个模块（Module）。
-    ·为了避免模块名冲突，Python又引入了按目录来组织模块的方法，称为包（Package）。
+    ·为了避免模块名冲突，Python又引入了按目录来组织模块的方法，称为包（Package）。java
+     中文件夹与包等价。python中需要有_init_.py。
         ·一个abc.py的文件就是一个名字叫abc的模块，一个xyz.py的文件就是一个名字叫xyz的
          模块。
         ·假设我们的abc和xyz这两个模块名字与其他模块冲突了，于是我们可以通过包来组织模
@@ -869,3 +908,319 @@
          private函数或变量。
 
 3.安装第三方模块
+    ·在Python中，安装第三方模块，是通过包管理工具pip完成的。
+    ·Mac或Linux上有可能并存Python 3.x和Python 2.x，因此对应的pip命令是pip3。
+    ·在使用Python时，我们经常需要用到很多第三方库，例如，上面提到的Pillow，以及MySQL
+     驱动程序，Web框架Flask，科学计算Numpy等。用pip一个一个安装费时费力，还需要考虑兼
+     容性。我们推荐直接使用Anaconda，这是一个基于Python的数据处理和科学计算平台，它已
+     经内置了许多非常有用的第三方库，我们装上Anaconda，就相当于把数十个第三方模块自动
+     安装好了，非常简单易用。
+    ·当我们试图加载一个模块时，Python会在指定的路径下搜索对应的.py文件，如果找不到，就
+     会报错：
+    ·默认情况下，Python解释器会搜索当前目录、所有已安装的内置模块和第三方模块，搜索路
+     径存放在sys模块的path变量中：
+        ·>>> import sys
+         >>> sys.path
+         ['', '/Library/Frameworks/Python.framework/Versions/3.6/lib/python36.zip',
+         '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6', ...,
+         '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/
+         site-packages']
+    ·如果我们要添加自己的搜索目录，有两种方法：
+        ·直接修改sys.path，添加要搜索的目录：
+         >>> import sys
+         >>> sys.path.append('/Users/michael/my_py_scripts')
+        ·设置环境变量PYTHONPATH，该环境变量的内容会被自动添加到模块搜索路径中。设置方
+         式与设置Path环境变量类似。注意只需要添加你自己的搜索路径，Python自己本身的搜
+         索路径不受影响。
+
+
+六.面向对象编程
+1.类和实例
+    ·在Python中，定义类是通过class关键字：
+        ·class Student(object):
+             pass
+    ·class后面紧接着是类名，即Student，类名通常是大写开头的单词，紧接着是(object)，表
+     示该类是从哪个类继承下来的。通常，如果没有合适的继承类，就使用object类，这是所有
+     类最终都会继承的类。
+    ·定义好了Student类，就可以根据Student类创建出Student的实例，创建实例是通过类名+
+     ()实现的：
+        ·>>> bart = Student()
+         >>> bart
+         <__main__.Student object at 0x10a67a590>
+         >>> Student
+         <class '__main__.Student'>
+    ·可以自由地给一个实例变量绑定属性，比如，给实例bart绑定一个name属性：
+        ·>>> bart.name = 'Bart Simpson'
+         >>> bart.name
+         'Bart Simpson'
+    ·由于类可以起到模板的作用，因此，可以在创建实例的时候，把一些我们认为必须绑定的属性
+     强制填写进去。通过定义一个特殊的__init__方法，在创建实例的时候，就把name，score
+     等属性绑上去：
+        ·class Student2(object):
+             def __init__(self, name, score):
+                 self.name = name
+                 self.score = score
+    ·__init__的第一个参数永远是实例变量self
+
+2.数据封装
+    ·class Student2(object):
+         def __init__(self, name, score):
+             self.name = name
+             self.score = score
+
+         def print_score(self):
+             print('%s: %s' % (self.name, self.score))
+    ·和静态语言不同，Python允许对实例变量绑定任何数据，也就是说，对于两个实例变量，虽
+     然它们都是同一个类的不同实例，但拥有的变量名称都可能不同：
+        >>> bart = Student('Bart Simpson', 59)
+        >>> lisa = Student('Lisa Simpson', 87)
+        >>> bart.age = 8
+        >>> bart.age
+        8
+        >>> lisa.age
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+        AttributeError: 'Student' object has no attribute 'age'
+
+3.访问限制
+    ·从前面Student类的定义来看，外部代码还是可以自由地修改一个实例的name、score属性。
+    ·如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线__，在Python中，实
+     例的变量名如果以__开头，就变成了一个私有变量（private），只有内部可以访问，外部不
+     能访问
+    ·如果外部代码要获取name和score，可以给Student类增加get_name和get_score这样的方法
+    ·要允许外部代码修改score，可以再给Student类增加set_score方法
+    ·在Python中，变量名类似__xxx__的，也就是以双下划线开头，并且以双下划线结尾的，是
+     是特殊变量，特殊变量是可以直接访问的。
+    ·以一个下划线开头的实例变量名，比如_name，这样的实例变量外部是可以访问的，但是，按
+     照约定俗成的规定，当你看到这样的变量时，意思就是，“虽然我可以被访问，但是，请把我
+     视为私有变量，不要随意访问”。
+    ·bart.__name = 'New Name'
+     表面上看，外部代码“成功”地设置了__name变量，但实际上这个__name变量和class内部的
+     __name变量不是一个变量！内部的__name变量已经被Python解释器自动改成了其他变量名，
+     而外部代码给bart新增了一个__name变量。
+
+4.继承和多态
+    ·class Animal(object):
+         def run(self):
+             print('Animal is Running')
+
+     class Dog(Animal):
+         pass
+    ·“开闭”原则：
+        ·对扩展开放：允许新增Animal子类；
+        ·对修改封闭：不需要修改依赖Animal类型的run_twice()等函数。
+    ·动态语言的鸭子类型特点决定了继承不像静态语言那样是必须的。它并不要求严格的继承体系，
+     一个对象只要“看起来像鸭子，走起路来像鸭子”，那它就可以被看做是鸭子。
+    ·Python的“file-like object“就是一种鸭子类型。对真正的文件对象，它有一个read()方
+     法，返回其内容。但是，许多对象，只要有read()方法，都被视为“file-like object“。
+     许多函数接收的参数就是“file-like object“，你不一定要传入真正的文件对象，完全可以
+     传入任何实现了read()方法的对象。
+
+5.获取对象信息（类似JavaScript）
+    ·使用type()
+        ·基本类型
+            >>> type(123)
+            <class 'int'>
+            >>> type('str')
+            <class 'str'>
+            >>> type(None)
+            <type(None) 'NoneType'>
+        ·函数或者类
+            >>> type(abs)
+            <class 'builtin_function_or_method'>
+            >>> type(a)
+            <class '__main__.Animal'>
+        ·判断对象是否为函数
+            >>> import types
+            >>> def fn():
+            ...     pass
+            ...
+            >>> type(fn)==types.FunctionType
+            True
+            >>> type(abs)==types.BuiltinFunctionType
+            True
+            >>> type(lambda x: x)==types.LambdaType
+            True
+            >>> type((x for x in range(10)))==types.GeneratorType
+            True
+    ·使用isinstance() (优先使用)
+        ·object -> Animal -> Dog -> Husky
+        ·形式：isinstance(Husky(), Husky)
+        ·一个类的对象是所有该类父类及该类本身的实例，返回True
+        ·还可以判断一个变量是否是某些类型中的一种
+            >>> isinstance([1, 2, 3], (list, tuple))
+            True
+            >>> isinstance((1, 2, 3), (list, tuple))
+            True
+    ·使用dir()
+        ·如果要获得一个对象的所有属性和方法，可以使用dir()函数，它返回一个包含字符串
+         的list，比如，获得一个str对象的所有属性和方法
+        ·类似__xxx__的属性和方法在Python中都是有特殊用途的，比如__len__方法返回长度。
+         在Python中，如果你调用len()函数试图获取一个对象的长度，实际上，在len()函数内
+         部，它自动去调用该对象的__len__()方法，所以，下面的代码是等价的：
+            >>> len('ABC')
+            3
+            >>> 'ABC'.__len__()
+            3
+        ·我们自己写的类，如果也想用len(myObj)的话，就自己写一个__len__()方法
+        ·剩下的都是普通属性或方法，比如lower()返回小写的字符串
+        ·配合getattr()、setattr()以及hasattr()，我们可以直接操作一个对象的状态：
+            ·getattr(obj, 'y')
+            ·setattr(obj, 'y', 19)
+            ·hasattr(obj, 'y')
+            ·如果试图获取不存在的属性，会抛出AttributeError的错误
+            ·可以传入一个default参数，如果属性不存在，就返回默认值
+                ·getattr(obj, 'z', 404) # 获取属性'z'，如果不存在，返回默认值404
+            ·只有在不知道对象信息的时候，我们才会去获取对象信息
+            ·假设我们希望从文件流fp中读取图像，我们首先要判断该fp对象是否存在read方法
+             ，如果存在，则该对象是一个流，如果不存在，则无法读取。hasattr()就派上了
+             用场。
+                 def readImage(fp):
+                 if hasattr(fp, 'read'):
+                     return readData(fp)
+                 return None
+
+6.实例属性和类属性
+    ·由于Python是动态语言，根据类创建的实例可以任意绑定属性。给实例绑定属性的方法是通
+     过实例变量，或者通过self变量：
+        class Student(object):
+            def __init__(self, name):
+                self.name = name
+
+        s = Student('Bob')
+        s.score = 90
+    ·如果Student类本身需要绑定一个属性，可以直接在class中定义属性。这种属性是类属性，
+     归Student类所有。当我们定义了一个类属性后，这个属性虽然归类所有，但类的所有实例都
+     可以访问到。（相当于java类中被static修饰的属性）
+    ·在编写程序的时候，千万不要对实例属性和类属性使用相同的名字，因为相同名称的实例属性
+     将屏蔽掉类属性，但是当你删除实例属性后，再使用相同的名称，访问到的将是类属性。
+    ·del s.name: 删除实例属性name
+    ·del Student.name: 删除类属性name
+
+
+七.面向对象高级编程
+1.使用__slots__
+    ·正常情况下，当我们定义了一个class，创建了一个class的实例后，我们可以给该实例绑定
+     任何属性和方法
+        ·实例绑定属性
+            s = Student()
+            s.name = 'Michael'
+        ·实例绑定方法
+            s.set_age = MethodType(set_age, s)  # 函数要先转化为方法
+    ·使用__slots__
+        ·作用：限制实例的属性
+        ·class Student(object):
+             __slots__ = ('name', 'age') # 用tuple定义允许绑定的属性名称
+        ·使用__slots__要注意，__slots__定义的属性仅对当前类实例起作用，对继承的子类
+         是不起作用的。除非在子类中也定义__slots__，这样，子类实例允许定义的属性就是自
+         身的__slots__加上父类的__slots__。
+
+2.使用@property
+    ·@property装饰器就是负责把一个方法变成属性调用的
+        class Student(object):
+
+            @property
+            def score(self):
+                return self._score
+
+            @score.setter
+            def score(self, value):
+                if not isinstance(value, int):
+                    raise ValueError('score must be an integer!')
+                if value < 0 or value > 100:
+                    raise ValueError('score must between 0 ~ 100!')
+                self._score = value
+
+            @score.deleter
+            def score(self, value):
+                del self._score
+
+    ·把一个getter方法变成属性，只需要加上@property就可以了。
+        ·只有@property表示只读。
+        ·同时有@property和@x.setter表示可读可写。
+        ·同时有@property和@x.setter和@x.deleter表示可读可写可删除。
+    ·还可以定义只读属性。只定义getter方法，不定义setter方法就是一个只读属性。
+    ·@property广泛应用在类的定义中，可以让调用者写出简短的代码，同时保证对参数进行必要
+     的检查，这样，程序运行时就减少了出错的可能性。
+
+3.多重继承
+    ·在设计类的继承关系时，通常，主线都是单一继承下来的，例如，Ostrich继承自Bird。
+     但是，如果需要“混入”额外的功能，通过多重继承就可以实现，比如，让Ostrich除了继
+     承自Bird外，再同时继承Runnable。这种设计通常称之为MixIn。
+    ·为了更好地看出继承关系，我们把Runnable和Flyable改为RunnableMixIn和
+     FlyableMixIn。
+    ·已存在Mammal、 RunnableMixIn和 CarnivorousMixIn三个类
+        class Dog(Mammal, RunnableMixIn, CarnivorousMixIn):
+            pass
+    ·只允许单一继承的语言（如Java）不能使用MixIn的设计
+    ·MixIn的目的就是给一个类增加多个功能，这样，在设计类的时候，我们优先考虑通过多重继
+     承来组合多个MixIn的功能，而不是设计多层次的复杂的继承关系。
+
+4.定制类
+    ·类似__slots__这种形如__xxx__的变量或者函数名在Python中有特殊用途。
+    ·__slots__属性
+    ·__len__()方法能让class作用于len()函数。
+    ·__str__与__repr__
+        ·设置直接打印实例时的控制台输出
+        ·代码：
+            >>> class Student(object):
+            ...     def __init__(self, name):
+            ...         self.name = name
+            ...     def __str__(self):
+            ...         return 'Student object (name: %s)' % self.name
+            ...
+            >>> s = Student('Michael')
+            >>> print(s)
+            Student object (name: Michael)
+            >>> s
+            <__main__.Student object at 0x109afb310>
+        ·直接显示变量调用的不是__str__()，而是__repr__()，两者的区别是__str__()返回
+         用户看到的字符串，而__repr__()返回程序开发者看到的字符串，也就是说，
+         __repr__()是为调试服务的。
+        ·解决办法是再定义一个__repr__()。但是通常__str__()和__repr__()代码都是一样的
+         ，所以，有个偷懒的写法：
+             class Student(object):
+                def __init__(self, name):
+                    self.name = name
+                def __str__(self):
+                    return 'Student object (name=%s)' % self.name
+                __repr__ = __str__
+        ·如果实现了__repr__而没有定义__str__，那么对象将会表现出__str__ = __repr__
+    ·__iter__
+        ·如果一个类想被用于for ... in循环，类似list或tuple那样，就必须实现一个
+         __iter__()方法，该方法返回一个迭代对象，然后，Python的for循环就会不断调用该
+         迭代对象的__next__()方法拿到循环的下一个值，直到遇到StopIteration错误时退出
+         循环。
+        ·
+    ·__getitem__
+    ·__getattr__
+    ·__call__
+
+5.使用枚举类
+6.使用元类
+
+
+八.错误、调试和测试
+1.错误处理
+2.调试
+3.单元测试
+4.文档测试
+
+
+九.IO编程
+1.文件读写
+2.StringIO和BytesIO
+3.操作文件和目录
+4.序列化
+
+
+十.进程和线程
+
+
+十一.正则表达式
+
+
+十二.常用内建模块
+
+
+十三.常用第三方模块
