@@ -72,8 +72,30 @@
          字符串内的占位符{0}、{1}……
             ·>>>'Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)
                 'Hello, 小明, 成绩提升了 17.1%'
+        ·将字符串str重复输出n次
+            ·print(str * n)
         ·print自带换行，若不想换行需设置end属性
             ·print('contents', end='')
+        ·in/not in
+            ·判断字符串str1中是否包含另一个字符串str2
+            ·str2 in str1
+            ·str2 not in str1
+        ·count函数
+            ·统计字符串里某个字符串的出现次数
+            ·print(str.count('i'))
+        ·endswith函数
+            ·判断是否以某个字符串为后缀
+            ·print(str.endswith('afa'))
+        ·find/index函数
+            ·检测字符串中是否包含子字符串str，返回索引值，类似java中的indexOf
+            ·print(str.index('love'))
+            ·index()方法在没有找到指定字符串的时候会抛出异常. 
+            ·另外,index()也可以用于List对象,返回指定元素的索引,用法相同.
+        ·replace函数
+            ·替换，同java
+            ·newstr = str.replace('china', 'nanning')
+        ·split函数
+            ·同java6
     ·java
         String string = "test";
         byte[] bs = string.getBytes("GBK");
