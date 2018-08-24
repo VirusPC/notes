@@ -118,6 +118,11 @@
         ·要把某个元素替换成别的元素，可以直接赋值给对应的索引位置：
             ·classmates[1] = 'Sarah'
         ·list里面的元素的数据类型可以不同
+        ·is用来判断是否指向同一内存地址，==用于判断值是否相同
+            ·list1 = list(range(8))
+             list2 = list(range(8))
+             print(list1 is list2)  # False
+             print(list1 == list2)  # True
     ·tuple
         ·另一种有序列表叫元组：tuple。tuple和list非常类似，但是tuple一旦初始化就不能
          修改，代码更安全。
@@ -225,8 +230,6 @@
                  Michael 95
                  Bob 75
                  Tracy 85
-
-
         ·和list比较，dict有以下几个特点：
             ·dict查找和插入的速度极快，不会随着key的增加而变慢；list查找和插入的时间
              随着元素的增加而增加；
@@ -234,10 +237,12 @@
     ·set
         ·set和dict类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在
          set中，没有重复的key。
-        ·要创建一个set，需要提供一个list作为输入集合
-            >>> s = set([1, 2, 3]) # s = set{1, 2, 3}
-            >>> s
-            {1, 2, 3}
+        ·直接创建set
+            ·s = set{1, 2, 3}
+        ·利用list创建set
+            ·s = set([1, 2, 3]) 
+        ·利用字符串创建set
+            ·s = set('aabbccc')  # {'a', 'b', 'c'}
         ·通过add(key)方法可以添加元素到set中，可以重复添加，但不会有效果；
          list通过insert或append
         ·通过remove(key)方法可以删除元素；list通过pop
@@ -249,6 +254,15 @@
             {2, 3}
             >>> s1 | s2
             {1, 2, 3, 4}
+        ·两个集合的差集（在zimu1中，但不在zimu2中）
+            ·zimucha = zimu1 - zimu2
+             print(zimucha)
+        ·两个集合的对称差集（在zimu1或zimu2中，但不会同时出现在二者中）
+            ·zimuduicha = zimu1 ^ zimu2
+             print('对称差:', zimuduicha)
+        ·集合中添加多个元素
+            ·zimu2.update([10, 37, 99])
+            print(zimu2)
     ·再议不可变对象
         ·对于可变对象，比如list，对list进行操作，list内部的内容是会变化的，比如：
             >>> a = ['c', 'b', 'a']
