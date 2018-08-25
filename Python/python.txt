@@ -181,6 +181,7 @@
              sum = sum + n
              n = n - 2
          print(sum)
+    ·while-else 循环
     ·break 用法同C语言、Java等
     ·continue 用法同C语言，Java等
 
