@@ -347,6 +347,12 @@
         ·返回值是一个tuple！但是，在语法上，返回一个tuple可以省略括号，而多个变量可以
          同时接收一个tuple，按位置赋给对应的值，所以，Python的函数返回多值其实就是返回
          一个tuple，但写起来更方便。
+    ·可通过global关键字来使用全局变量
+        a = 0
+        def func():
+            global a
+            a = 1
+        print(a)  # 输出1 ,若去掉global a这一句则输出0
 
 3.函数的参数
     ·位置参数
@@ -871,6 +877,13 @@
                         return func(*args, **kw)
                     return wrapper
                 return decorator
+    ·def log(func):
+        return func    
+     @log
+     def func():
+        pass
+     @表示将func函数作为参数传入log中并取得其返回值，故若log函数的返回值不是函数，
+     就不能调用func()
 
 5.偏函数（Partial function）
     ·通过设定参数的默认值，可以降低函数调用的难度。而偏函数也可以做到这一点。
@@ -1152,6 +1165,16 @@
      将屏蔽掉类属性，但是当你删除实例属性后，再使用相同的名称，访问到的将是类属性。
     ·del s.name: 删除实例属性name
     ·del Student.name: 删除类属性name
+
+7.类方法
+    ·类方法是属于类本身的，但也可以使用对象实例调用。但两者调用的方式有区别（传递参数个
+     数方面）
+    ·类方法在定义中，第一个参数为cls，代表当前的类，类比方法的self参数
+    ·类方法定义的语法规范：
+        @classmethod
+        def 方法名称 (cls [,arg1,arg2,...]):
+    ·使用装饰器方式定义，告知python解析器该方法为类方法，解析器优化该方法的执行效率
+    ·
 
 
 七.面向对象高级编程
